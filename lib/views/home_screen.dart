@@ -91,6 +91,13 @@ class _PostListPageState extends State<PostListPage> {
         // Here we take the value from the PostListPage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'login');
+              },
+              icon: const Icon(Icons.person))
+        ],
       ),
       body: SingleChildScrollView(
         child: Center(
