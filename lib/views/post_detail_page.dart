@@ -18,59 +18,123 @@ class PostDetailPage extends StatefulWidget {
 }
 
 class PostDetailPageState extends State<PostDetailPage> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: Colors.black,
-  automaticallyImplyLeading: false,
-  leading: FlutterFlowIconButton(
-    borderColor: Colors.transparent,
-    borderRadius: 30,
-    borderWidth: 1,
-    buttonSize: 40,
-    icon: Icon(
-      Icons.arrow_back_rounded,
-      color: Colors.white,
-      size: 30,
-    ),
-    onPressed: () {
-      print('IconButton pressed ...');
-    },
-  ),
-  title: Align(
-    alignment: AlignmentDirectional(-1.2, 0),
-    child: Text(
-      'Community',
-      style: FlutterFlowTheme.of(context).title2.override(
-            fontFamily: 'Poppins',
-            color: Colors.white,
-            fontSize: 22,
-          ),
-    ),
-  ),
-  actions: [],
-  centerTitle: false,
-  elevation: 2,
-);
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        title: Text('Community'),
+        centerTitle: false,
+        leading: const IconButton(icon: Icon(Icons.menu), onPressed: null),
+        actions: [
+          IconButton(icon: const Icon(Icons.image), onPressed: null),
+          const IconButton(icon: Icon(Icons.search), onPressed: null),
+        ],
+      ),
+    );
   }
 }
 
 @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+Widget build(BuildContext context) {
+  return Scaffold(
       body: SingleChildScrollView(
-        child: SafeArea(
-          bottom: false,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[]
-              comment() )
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+        Container(
+          width: 40,
+          height: 40,
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+          ),
+          child: Image(
+            image: AssetImage('assets/imgs/profile.jpeg'),
+          ),
         )
-      )
-    );
-  }
-
-  comment() {
-  }
+      ])));
+  Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+      child: Row(mainAxisSize: MainAxisSize.max, children: [
+        Icon(
+          Icons.favorite_border,
+          color: Color(0xFF57636C),
+          size: 24,
+        ),
+      ]));
+  Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+      child: Text(
+        '3',
+      ));
+  Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+      child: Text(
+        'likes',
+      ));
+  Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+    child: Icon(
+      Icons.mode_comment_outlined,
+      color: Color(0xFF57636C),
+      size: 24,
+    ),
+  );
+  Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+    child: Text('8'),
+  );
+  Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+    child: Text('Comments'),
+  );
+  Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
+      child: Row(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                      alignment: AlignmentDirectional(0, 0),
+                      child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                          child: Container(
+                            constraints: BoxConstraints(
+                              maxWidth:
+                                  MediaQuery.of(context).size.width * 0.75,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          )))
+                ])
+          ]));
+  child:
+  Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+      child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+                'Anonymous',
+            Text(
+                  'That game was insane bro',
+                  ),
+            )])
+          );
+  Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(12, 4, 0, 0),
+      child: Text(
+        '12 min ago',
+      ));
+}
