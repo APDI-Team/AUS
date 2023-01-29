@@ -99,6 +99,28 @@ class EventWritePageState extends State<EventWritePage> {
 
   String trueCategories = "";
   var trueLanguages = [];
+  Map<String, bool> textChecker = {
+    'Title': false,
+    'Tags': false,
+    'Date': false,
+    'Time': false,
+  };
+  bool isButtonEnabled = false;
+
+  Future textChecking() async {
+    if (textChecker['Title']! &&
+        textChecker['Tags']! &&
+        textChecker['Date']! &&
+        textChecker['Time']!) {
+      setState(() {
+        isButtonEnabled = true;
+      });
+    } else {
+      setState(() {
+        isButtonEnabled = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -229,6 +251,15 @@ class EventWritePageState extends State<EventWritePage> {
                   height: 50,
                   child: TextField(
                       controller: eventTitle,
+                      onChanged: (content) {
+                        if (content != "") {
+                          textChecker['Title'] = true;
+                          textChecking();
+                        } else {
+                          textChecker['Title'] = false;
+                          textChecking();
+                        }
+                      },
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -263,6 +294,15 @@ class EventWritePageState extends State<EventWritePage> {
                   height: 50,
                   child: TextField(
                       controller: tags,
+                      onChanged: (content) {
+                        if (content != "") {
+                          textChecker['Tags'] = true;
+                          textChecking();
+                        } else {
+                          textChecker['Tags'] = false;
+                          textChecking();
+                        }
+                      },
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -303,6 +343,9 @@ class EventWritePageState extends State<EventWritePage> {
                             ),
                             onPressed: () {
                               _pickDateDialog(context);
+
+                              textChecker['Date'] = true;
+                              textChecking();
                             })),
                     SizedBox(
                       width: 10,
@@ -322,6 +365,8 @@ class EventWritePageState extends State<EventWritePage> {
                             ),
                             onPressed: () {
                               _pickTimeDialog(context);
+                              textChecker['Time'] = true;
+                              textChecking();
                             }))
                   ])),
               Padding(
@@ -484,52 +529,90 @@ class EventWritePageState extends State<EventWritePage> {
                   child: SizedBox(
                       width: 350,
                       height: 46,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.white60),
-                        ),
-                        onPressed: () {
-                          showDialog<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('Create Post'),
-                                  content: Text(
-                                      "Are you sure you want to create this post?"),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: Text("No"),
-                                    ),
-                                    TextButton(
-                                        onPressed: () {
-                                          for (var language in languages.keys) {
-                                            languages[language] == true
-                                                ? trueLanguages.add(language)
-                                                : {};
-                                          }
-                                          for (var category
-                                              in categories.keys) {
-                                            categories[category] == true
-                                                ? trueCategories = category
-                                                : {};
-                                          }
-                                          uploadEvent(currentUser.uid);
-                                          setState(() {});
-                                          Navigator.pushNamedAndRemoveUntil(
-                                              context, '/', (route) => false);
-                                        },
-                                        child: Text("yes"))
-                                  ],
-                                );
-                              });
-                        },
-                        child: const Text(
-                          'Request to Post',
-                          style: TextStyle(color: Colors.white, fontSize: 20.0),
-                        ),
-                      )),
+                      child: isButtonEnabled
+                          ? ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.green),
+                              ),
+                              onPressed: () {
+                                showDialog<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Create Post'),
+                                        content: Text(
+                                            "Are you sure you want to create this post?"),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: Text("No"),
+                                          ),
+                                          TextButton(
+                                              onPressed: () {
+                                                for (var language
+                                                    in languages.keys) {
+                                                  languages[language] == true
+                                                      ? trueLanguages
+                                                          .add(language)
+                                                      : {};
+                                                }
+                                                for (var category
+                                                    in categories.keys) {
+                                                  categories[category] == true
+                                                      ? trueCategories =
+                                                          category
+                                                      : {};
+                                                }
+                                                uploadEvent(currentUser.uid);
+                                                setState(() {});
+                                                Navigator
+                                                    .pushNamedAndRemoveUntil(
+                                                        context,
+                                                        '/',
+                                                        (route) => false);
+                                              },
+                                              child: Text("yes"))
+                                        ],
+                                      );
+                                    });
+                              },
+                              child: const Text(
+                                'Request to Post',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20.0),
+                              ),
+                            )
+                          : ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.white60),
+                              ),
+                              onPressed: () {
+                                showDialog<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Warning'),
+                                        content: Text(
+                                            "You have not filled certain parts. Please check again"),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: Text("OK"),
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
+                              child: const Text(
+                                'Request to Post',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20.0),
+                              ),
+                            )),
                 ),
               ),
             ],
