@@ -53,6 +53,34 @@ class PostWritePageState extends State<PostWritePage> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        leading: GestureDetector(
+          child: Icon(
+            Icons.arrow_back_ios,
+          ),
+          onTap: () {
+            showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Discard Writings'),
+                    content: Text(
+                        "Are you sure you want to go back to the main page? (All you have written will be lost!) "),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text("No"),
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, '/', (route) => false);
+                          },
+                          child: Text("yes"))
+                    ],
+                  );
+                });
+          },
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
