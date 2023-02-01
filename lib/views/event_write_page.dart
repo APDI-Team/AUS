@@ -409,9 +409,6 @@ class EventWritePageState extends State<EventWritePage> {
                                     fontSize: 15, color: Colors.white),
                               ),
                               onPressed: () {
-                                for (var reset in categories.keys) {
-                                  categories[reset] = false;
-                                }
                                 setState(() {
                                   languages[language] == true
                                       ? languages[language] = false
