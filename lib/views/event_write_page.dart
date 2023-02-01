@@ -458,6 +458,13 @@ class EventWritePageState extends State<EventWritePage> {
                                   languages[language] == true
                                       ? languages[language] = false
                                       : languages[language] = true;
+                                  if (languages.values
+                                          .toList()
+                                          .where((item) => item == false)
+                                          .length ==
+                                      3) {
+                                    languages[language] = true;
+                                  }
                                 });
                               },
                               child: Text(
@@ -600,43 +607,20 @@ class EventWritePageState extends State<EventWritePage> {
                                                           .add(language)
                                                       : {};
                                                 }
-                                                if (trueLanguages.isNotEmpty) {
-                                                  for (var category
-                                                      in categories.keys) {
-                                                    categories[category] == true
-                                                        ? trueCategories =
-                                                            category
-                                                        : {};
-                                                  }
-                                                  uploadEvent(currentUser.uid);
-                                                  setState(() {});
-                                                  Navigator
-                                                      .pushNamedAndRemoveUntil(
-                                                          context,
-                                                          '/',
-                                                          (route) => false);
-                                                } else {
-                                                  showDialog<String>(
-                                                    context: context,
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        AlertDialog(
-                                                      title: const Text(
-                                                          'Requirement not fulfilled'),
-                                                      content: const Text(
-                                                          'Please Check Language(s) Section'),
-                                                      actions: <Widget>[
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  context),
-                                                          child: const Text(
-                                                              'Okay'),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
+                                                for (var category
+                                                    in categories.keys) {
+                                                  categories[category] == true
+                                                      ? trueCategories =
+                                                          category
+                                                      : {};
                                                 }
+                                                uploadEvent(currentUser.uid);
+                                                setState(() {});
+                                                Navigator
+                                                    .pushNamedAndRemoveUntil(
+                                                        context,
+                                                        '/',
+                                                        (route) => false);
                                               },
                                               child: Text("yes"))
                                         ],
