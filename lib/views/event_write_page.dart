@@ -24,7 +24,9 @@ class EventWritePageState extends State<EventWritePage> {
         await FirebaseFirestore.instance.collection("event").add({
       'title': eventTitle.text.trim(),
       'tag': tags.text.trim(),
-      'time': [getDate(), getTime()],
+      'time': Timestamp.fromDate(
+        DateTime(date.year, date.month, date.day, time.hour, time.minute),
+      ),
       'language': trueLanguages,
       'catagory': trueCategories,
       'location': eventLocation.text.trim(),
@@ -39,6 +41,9 @@ class EventWritePageState extends State<EventWritePage> {
 
   DateTime? _selectedDate;
   String? _selectedTime;
+
+  late TimeOfDay time;
+  late DateTime date;
 
   String getDate() {
     if (_selectedDate == null) {
@@ -65,6 +70,7 @@ class EventWritePageState extends State<EventWritePage> {
       lastDate: DateTime(DateTime.now().year + 3),
     );
     if (pickedDate == null) return;
+    date = pickedDate;
     setState(() => _selectedDate = pickedDate);
   }
 
@@ -74,6 +80,7 @@ class EventWritePageState extends State<EventWritePage> {
       initialTime: TimeOfDay.now(),
     );
     if (pickedTime == null) return;
+    time = pickedTime;
     setState(() => _selectedTime = pickedTime.format(context));
   }
 
@@ -379,7 +386,6 @@ class EventWritePageState extends State<EventWritePage> {
                             ),
                             onPressed: () {
                               _pickDateDialog(context);
-
                               textChecker['Date'] = true;
                               textChecking();
                             })),
