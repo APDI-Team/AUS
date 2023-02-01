@@ -167,12 +167,21 @@ class EventWritePageState extends State<EventWritePage> {
             children: [
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 0, 0),
-                child: Text(
-                  " Category",
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white70,
-                      fontWeight: FontWeight.bold),
+                child: RichText(
+                  text: TextSpan(
+                      text: "Category",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white70,
+                          fontWeight: FontWeight.bold),
+                      children: [
+                        TextSpan(
+                            text: ' *',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16))
+                      ]),
                 ),
               ),
               Container(
@@ -236,13 +245,22 @@ class EventWritePageState extends State<EventWritePage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 0, 20),
-                child: Text(
-                  " Title",
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white70,
-                      fontWeight: FontWeight.bold),
+                padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 0, 0),
+                child: RichText(
+                  text: TextSpan(
+                      text: "Title",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white70,
+                          fontWeight: FontWeight.bold),
+                      children: [
+                        TextSpan(
+                            text: ' *',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16))
+                      ]),
                 ),
               ),
               Center(
@@ -274,19 +292,28 @@ class EventWritePageState extends State<EventWritePage> {
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 0, 20),
-                child: Row(children: [
-                  Text(
-                    " Tags",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white70,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    " (max. 1-2)",
-                    style: TextStyle(fontSize: 16, color: Colors.white10),
-                  ),
-                ]),
+                child: RichText(
+                  text: TextSpan(
+                      text: "Tags",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white70,
+                          fontWeight: FontWeight.bold),
+                      children: [
+                        TextSpan(
+                            text: ' (max. 1-2)',
+                            style: TextStyle(
+                                color: Colors.white10,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16)),
+                        TextSpan(
+                            text: ' *',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16))
+                      ]),
+                ),
               ),
               Center(
                 child: SizedBox(
@@ -317,12 +344,21 @@ class EventWritePageState extends State<EventWritePage> {
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 0, 0),
-                child: Text(
-                  " Date and Time",
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white70,
-                      fontWeight: FontWeight.bold),
+                child: RichText(
+                  text: TextSpan(
+                      text: "Date and Time",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white70,
+                          fontWeight: FontWeight.bold),
+                      children: [
+                        TextSpan(
+                            text: ' *',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16))
+                      ]),
                 ),
               ),
               Padding(
@@ -370,13 +406,22 @@ class EventWritePageState extends State<EventWritePage> {
                             }))
                   ])),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 0, 20),
-                child: Text(
-                  "Language(s)",
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white70,
-                      fontWeight: FontWeight.bold),
+                padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 0, 0),
+                child: RichText(
+                  text: TextSpan(
+                      text: "Language(s)",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white70,
+                          fontWeight: FontWeight.bold),
+                      children: [
+                        TextSpan(
+                            text: ' *',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16))
+                      ]),
                 ),
               ),
               Container(
@@ -555,20 +600,43 @@ class EventWritePageState extends State<EventWritePage> {
                                                           .add(language)
                                                       : {};
                                                 }
-                                                for (var category
-                                                    in categories.keys) {
-                                                  categories[category] == true
-                                                      ? trueCategories =
-                                                          category
-                                                      : {};
+                                                if (trueLanguages.isNotEmpty) {
+                                                  for (var category
+                                                      in categories.keys) {
+                                                    categories[category] == true
+                                                        ? trueCategories =
+                                                            category
+                                                        : {};
+                                                  }
+                                                  uploadEvent(currentUser.uid);
+                                                  setState(() {});
+                                                  Navigator
+                                                      .pushNamedAndRemoveUntil(
+                                                          context,
+                                                          '/',
+                                                          (route) => false);
+                                                } else {
+                                                  showDialog<String>(
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        AlertDialog(
+                                                      title: const Text(
+                                                          'Requirement not fulfilled'),
+                                                      content: const Text(
+                                                          'Please Check Language(s) Section'),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context),
+                                                          child: const Text(
+                                                              'Okay'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
                                                 }
-                                                uploadEvent(currentUser.uid);
-                                                setState(() {});
-                                                Navigator
-                                                    .pushNamedAndRemoveUntil(
-                                                        context,
-                                                        '/',
-                                                        (route) => false);
                                               },
                                               child: Text("yes"))
                                         ],
