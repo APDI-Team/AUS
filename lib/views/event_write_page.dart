@@ -175,7 +175,7 @@ class EventWritePageState extends State<EventWritePage> {
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 0, 0),
                 child: RichText(
-                  text: TextSpan(
+                  text: const TextSpan(
                       text: "Category",
                       style: TextStyle(
                           fontSize: 16,
