@@ -24,6 +24,10 @@ class PostListPage extends StatefulWidget {
 }
 
 class _PostListPageState extends State<PostListPage> {
+  //   with AutomaticKeepAliveClientMixin {
+  // @override
+  // bool get wantKeepAlive => true;
+
   Future<void> refreshPosts({bool popular = false}) async {
     // List<Post> posts = await Post.getPostsFromFirebase(popular: popular);
     // List<PostController> _controllers = [];
@@ -53,10 +57,11 @@ class _PostListPageState extends State<PostListPage> {
             return const Center(child: CircularProgressIndicator());
           }
           return ListView.builder(
-            // physics: const AlwaysScrollableScrollPhysics(),
+            // key: PageStorageKey<String>("recenttt"),
             itemCount: snap.data!.size,
             itemBuilder: (BuildContext context, int i) {
               return FutureBuilder<Post>(
+                // key: PageStorageKey<String>("popularrr"),
                 future: Post.fromDocRef(firebaseSnap: snap.data!.docs[i]),
                 builder: (context, snapshot) {
                   if (snapshot.data == null) {
@@ -100,6 +105,7 @@ class _PostListPageState extends State<PostListPage> {
               child: TabBarView(
                 children: [
                   FutureBuilder(
+                      key: PageStorageKey<String>("recent"),
                       future: snapshots,
                       builder:
                           (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -116,6 +122,7 @@ class _PostListPageState extends State<PostListPage> {
                             popular: false, savedPosts: savedPosts);
                       }),
                   FutureBuilder(
+                      key: PageStorageKey<String>("popular"),
                       future: snapshots,
                       builder:
                           (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
