@@ -134,7 +134,7 @@ class Post {
     Query<Map<String, dynamic>> firebaseQuery =
         postCollection.orderBy('time', descending: true).limit(20);
     if (popular) {
-      firebaseQuery = firebaseQuery.orderBy('viewCount', descending: true);
+      firebaseQuery = postCollection.orderBy('viewCount', descending: true);
     }
     return firebaseQuery;
   }
