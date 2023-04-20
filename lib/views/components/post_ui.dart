@@ -1,12 +1,12 @@
-import 'package:aus/utils/color_utils.dart';
-import 'package:aus/views/components/popup_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../controllers/post_controller.dart';
 // import 'package:timeago/timeago.dart' as timeago;
+import '../../utils/color_utils.dart';
 import '../../utils/math_utils.dart';
+import 'custom_popup.dart';
 
 class ViewCommentSave extends StatefulWidget {
   const ViewCommentSave(
@@ -345,144 +345,16 @@ Widget writerInfoUI(BuildContext context, PostController controller) {
             ],
           ),
           Spacer(),
-          IconButton(
-            onPressed: () {
-              showDialog(
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  isDismissible: true,
+                  backgroundColor: Colors.transparent,
                   context: context,
-                  builder: (dialogContext) => Dialog(
-                        child: ListView(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            shrinkWrap: true,
-                            children: [
-                              'Block Post',
-                              'Block User',
-                            ]
-                                .map((e) => InkWell(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        DocumentReference userRef =
-                                            FirebaseFirestore.instance
-                                                .collection('user_info')
-                                                .doc(FirebaseAuth
-                                                    .instance.currentUser!.uid);
-                                        if (e == 'Block Post') {
-                                          popUpDialog(
-                                              context,
-                                              "Don't show this post",
-                                              "Do you want to remove this post from your feed?\n(This will also remove this post from your saved posts.)",
-                                              action: TextButton(
-                                                  onPressed: () {
-                                                    userRef.update({
-                                                      'blockedPosts': FieldValue
-                                                          .arrayUnion([
-                                                        controller
-                                                            .post.firebaseDocRef
-                                                      ])
-                                                    });
-                                                    // remove from saved
-                                                    userRef.update({
-                                                      'savedPosts': FieldValue
-                                                          .arrayRemove([
-                                                        controller
-                                                            .post.firebaseDocRef
-                                                      ])
-                                                    });
-                                                    // TODO: need to decrement saveCount of the post
-                                                    Navigator.pop(context);
-
-                                                    popUpDialog(
-                                                        context,
-                                                        "Removed Post",
-                                                        "Do you also want to report this post?",
-                                                        action: TextButton(
-                                                            onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                              Navigator.pushNamed(
-                                                                  context,
-                                                                  'report',
-                                                                  arguments: {
-                                                                    'post':
-                                                                        controller
-                                                                            .post
-                                                                  });
-                                                            },
-                                                            child: const Text(
-                                                                "Yes")));
-                                                  },
-                                                  child: const Text("Yes")));
-                                        } else if (e == 'Block User') {
-                                          popUpDialog(
-                                              context,
-                                              "Block the user of this post",
-                                              "Do you want to block the user of this post?\n(All the posts of this user will not appear on your feed.)",
-                                              action: TextButton(
-                                                onPressed: () {
-                                                  if (userRef !=
-                                                      controller.post.writer
-                                                          .userReference) {
-                                                    userRef.update({
-                                                      'blockedUsers': FieldValue
-                                                          .arrayUnion([
-                                                        controller.post.writer
-                                                            .userReference
-                                                      ])
-                                                    });
-                                                    Navigator.pop(context);
-                                                  } else {
-                                                    showDialog<void>(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return AlertDialog(
-                                                            title: const Text(
-                                                              'Warning',
-                                                              style: TextStyle(
-                                                                  fontSize: 16),
-                                                            ),
-                                                            content: const Text(
-                                                              'You cannot block yourself. Please check again.',
-                                                              style: TextStyle(
-                                                                  fontSize: 12),
-                                                            ),
-                                                            actions: <Widget>[
-                                                              TextButton(
-                                                                  onPressed: () =>
-                                                                      Navigator.pop(
-                                                                          context),
-                                                                  child: Text(
-                                                                    'OK',
-                                                                    style: TextStyle(
-                                                                        color: ApdiColors
-                                                                            .themeGreen),
-                                                                  ))
-                                                            ],
-                                                          );
-                                                        });
-                                                  }
-                                                },
-                                                child: const Text("Yes"),
-                                              ));
-                                        }
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 12,
-                                          horizontal: 16,
-                                        ),
-                                        child: Text(e),
-                                      ),
-                                    ))
-                                .toList()),
-                      ));
+                  builder: (context) => blockPostPopUp(context, controller));
             },
-            iconSize: 20,
-            padding: EdgeInsets.zero,
-            constraints: BoxConstraints(),
-            icon: Icon(
-              Icons.more_horiz_rounded,
-              color: hexStringToColor("#AAAAAA"),
-            ),
+            child: SvgPicture.asset('assets/icons/more_vert.svg'),
           ),
         ],
       ),
@@ -493,6 +365,27 @@ Widget writerInfoUI(BuildContext context, PostController controller) {
 Widget contentUI(BuildContext context, PostController controller,
     {bool isDetail = false}) {
   double topPad = isDetail ? 16 : 8;
+
+  Text titleWidget = Text(
+    controller.post.title.isEmpty ? "No Title" : controller.post.title,
+    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          fontFamily: 'Roboto',
+          color: ApdiColors.lightText,
+          fontSize: isDetail ? 20 : 16,
+          fontWeight: FontWeight.w500,
+        ),
+  );
+  Text bodyWidget = Text(
+    controller.post.text.isEmpty ? "No Content" : controller.post.text,
+    maxLines: isDetail ? 1000 : 2,
+    style: Theme.of(context).textTheme.bodyText2?.copyWith(
+          fontFamily: 'Roboto',
+          color: isDetail ? ApdiColors.lightText : hexStringToColor("#AAAAAA"),
+          fontSize: isDetail ? 16 : 14,
+          fontWeight: FontWeight.w400,
+          overflow: TextOverflow.ellipsis,
+        ),
+  );
   return Column(
     children: [
       Padding(
@@ -501,17 +394,7 @@ Widget contentUI(BuildContext context, PostController controller,
           mainAxisSize: MainAxisSize.max,
           children: [
             Expanded(
-              child: Text(
-                controller.post.title.isEmpty
-                    ? "No Title"
-                    : controller.post.title,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontFamily: 'Roboto',
-                      color: ApdiColors.lightText,
-                      fontSize: isDetail ? 20 : 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-              ),
+              child: isDetail ? SelectionArea(child: titleWidget) : titleWidget,
             ),
           ],
         ),
@@ -522,21 +405,7 @@ Widget contentUI(BuildContext context, PostController controller,
           mainAxisSize: MainAxisSize.max,
           children: [
             Expanded(
-              child: Text(
-                controller.post.text.isEmpty
-                    ? "No Content"
-                    : controller.post.text,
-                maxLines: isDetail ? 1000 : 2,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                      fontFamily: 'Roboto',
-                      color: isDetail
-                          ? ApdiColors.lightText
-                          : hexStringToColor("#AAAAAA"),
-                      fontSize: isDetail ? 16 : 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-              ),
+              child: isDetail ? SelectionArea(child: bodyWidget) : bodyWidget,
             ),
           ],
         ),
