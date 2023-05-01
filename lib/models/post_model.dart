@@ -4,7 +4,7 @@ import 'user_model.dart';
 import 'comment_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-const List postCategory = ["썸*연애", "19+", "블라블라", "아카데믹", "생활정보", "속보"];
+const List postCategory = ['Just Talk', 'Academic', '19+'];
 
 class Post {
   User writer = User();
@@ -19,21 +19,30 @@ class Post {
   List<Comment> comments = [];
   List commentRefs = [];
   bool anonymous = false;
+  int reportCount = 0;
+  List reports = [];
   bool deleted = false;
+  int points = 0;
+  // bool english = false;
 
-  Post(
-      {User? postWriter,
-      String? postTitle,
-      String? postCategory,
-      String? content,
-      DateTime? time,
-      int? postViews,
-      int? postSaves,
-      List<Comment>? commentList,
-      List? commentRefList,
-      DocumentReference<Map<String, dynamic>>? docRef,
-      bool? isAnonymous,
-      bool? postDeleted}) {
+  Post({
+    User? postWriter,
+    String? postTitle,
+    String? postCategory,
+    String? content,
+    DateTime? time,
+    int? postViews,
+    int? postSaves,
+    List<Comment>? commentList,
+    List? commentRefList,
+    int? postReports,
+    List? reportRefList,
+    DocumentReference<Map<String, dynamic>>? docRef,
+    bool? isAnonymous,
+    bool? postDeleted,
+    int? postPoints,
+    // bool? isEnglish
+  }) {
     writer = postWriter ?? writer;
     title = postTitle ?? title;
     category = postCategory ?? category;
@@ -43,7 +52,11 @@ class Post {
     saveCount = postSaves ?? saveCount;
     commentRefs = commentRefList ?? commentRefs;
     anonymous = isAnonymous ?? anonymous;
+    reportCount = postReports ?? reportCount;
+    reports = reportRefList ?? reports;
     deleted = postDeleted ?? deleted;
+    points = postPoints ?? points;
+    // english = isEnglish ?? english;
     // comments = commentList ?? comments;
 
     if (commentList != null && commentList.isNotEmpty) {
@@ -82,6 +95,7 @@ class Post {
 
     User postWriter;
     bool isAnonymous = true;
+    // bool isEnglish = false;
     try {
       var user = postData.get('user');
       DocumentReference<Map<String, dynamic>> userRef;
@@ -106,6 +120,15 @@ class Post {
         postSaves: postData.get('saveCount'),
         commentList: comments,
         commentRefList: commentRefList,
+        postReports: (postData.data()!['reportCount'] != null)
+            ? postData.get('reportCount')
+            : 0,
+        reportRefList: (postData.data()!['reports'] != null)
+            ? postData.get('reports') as List
+            : [],
+        postPoints:
+            (postData.data()!['points'] != null) ? postData.get('points') : 0,
+        // isEnglish: isEnglish,
         docRef: firebaseDoc,
         isAnonymous: isAnonymous);
   }
@@ -146,9 +169,10 @@ class Post {
     if (popular) {
       firebaseQuery = postCollection
           // .where('time', isLessThanOrEqualTo: DateTime.now())
-          .where('viewCount', isGreaterThanOrEqualTo: 20)
-          .limit(50)
-          .orderBy('viewCount', descending: true);
+          // .where('viewCount', isGreaterThanOrEqualTo: 20)
+          // .orderBy('points', descending: true)
+          .orderBy('points', descending: true)
+          .limit(50);
     }
     return firebaseQuery;
   }
