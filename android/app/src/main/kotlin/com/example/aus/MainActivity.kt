@@ -1,4 +1,4 @@
-package com.example.aus
+package com.inus.apdi
 
 import io.flutter.embedding.android.FlutterActivity
 
