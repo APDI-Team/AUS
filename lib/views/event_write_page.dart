@@ -1,6 +1,6 @@
 // import 'dart:io';
 
-// import 'package:aus/controllers/event_controller.dart';
+import 'package:aus/models/event_model.dart';
 import 'package:aus/views/components/custom_popup.dart';
 import 'package:aus/views/components/popup_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -106,11 +106,14 @@ class EventWritePageState extends State<EventWritePage> {
   final User currentUser = FirebaseAuth.instance.currentUser!;
 
   Map<String, bool> categories = {
-    'Party': true,
-    'Workshop': false,
+    'Competition': true,
+    'Internship': false,
     'Seminar': false,
+    'Workshop': false,
     'Webinar': false,
-    'Competition': false,
+    'Party': false,
+    'Sports': false,
+    'Others': false,
   };
 
   Map<String, bool> languages = {
@@ -168,6 +171,9 @@ class EventWritePageState extends State<EventWritePage> {
     }
     for (var category in categories.keys) {
       categories[category] == true ? trueCategories = category : {};
+    }
+    if (EVENT_CATEGORY.sublist(0, 5).contains(trueCategories)) {
+      formal = true;
     }
     uploadEvent(currentUser.uid);
     setState(() {});

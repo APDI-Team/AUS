@@ -2,12 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'user_model.dart';
 
 const List EVENT_CATEGORY = [
-  "Event",
-  "Seminar",
-  "Workshop",
-  "Competition",
-  "Webinar",
-  "Party"
+  'Competition',
+  'Internship',
+  'Seminar',
+  'Workshop',
+  'Webinar',
+  'Party',
+  'Sports',
+  'Others',
 ];
 
 const List EVENT_LANGUAGE = ["English", "Cantonese", "Mandarin"];
