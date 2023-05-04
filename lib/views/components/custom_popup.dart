@@ -757,7 +757,7 @@ Widget discardWritingsPopUp(BuildContext context, {Widget? action}) {
           child: Container(
               padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
               child: SelectableText(
-                "Are you sure you want to go back to the main page? (All you have written will be lost!)",
+                "Are you sure you want to go back to the main page? \n (All you have written will be lost!)",
                 style: Theme.of(context).textTheme.bodyText2?.copyWith(
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w400,
@@ -1015,6 +1015,153 @@ Widget deletePostPopUp(
               ),
             ],
           ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget maxTagWarningPopup(BuildContext context, {Widget? action}) {
+  return Container(
+    height: 200,
+    decoration: boxDeco,
+    child: Column(
+      children: [
+        Center(
+          child: Container(
+              padding: EdgeInsetsDirectional.only(top: 30),
+              child: SelectableText("Maximum of two tags is allowed",
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                      fontFamily: 'Roboto',
+                      color: hexStringToColor('#FFFFFF'),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500))),
+        ),
+        Center(
+          child: Container(
+              padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
+              child: SelectableText(
+                "Please try again.",
+                style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w400,
+                      color: hexStringToColor('#A3A3A3'),
+                      fontSize: 14,
+                    ),
+                textAlign: TextAlign.center,
+              )),
+        ),
+        Padding(
+          padding: const EdgeInsetsDirectional.only(top: 30),
+          child: Center(
+              child: SizedBox(
+            width: 170,
+            height: 50,
+            child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: rightButtonStyle(),
+                child: const Text("Close")),
+          )),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget urlInvalidPopup(BuildContext context, {Widget? action}) {
+  return Container(
+    height: 200,
+    decoration: boxDeco,
+    child: Column(
+      children: [
+        Center(
+          child: Container(
+              padding: EdgeInsetsDirectional.only(top: 30),
+              child: SelectableText("Warning",
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                      fontFamily: 'Roboto',
+                      color: hexStringToColor('#FFFFFF'),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500))),
+        ),
+        Center(
+          child: Container(
+              padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
+              child: SelectableText(
+                "The registration URL you have filled in is invalid. Please check again.",
+                style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w400,
+                      color: hexStringToColor('#A3A3A3'),
+                      fontSize: 14,
+                    ),
+                textAlign: TextAlign.center,
+              )),
+        ),
+        Padding(
+          padding: const EdgeInsetsDirectional.only(top: 30),
+          child: Center(
+              child: SizedBox(
+            width: 170,
+            height: 50,
+            child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: rightButtonStyle(),
+                child: const Text("OK")),
+          )),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget incompleteEventPopup(BuildContext context, {Widget? action}) {
+  return Container(
+    height: 200,
+    decoration: boxDeco,
+    child: Column(
+      children: [
+        Center(
+          child: Container(
+              padding: EdgeInsetsDirectional.only(top: 30),
+              child: SelectableText("Warning",
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                      fontFamily: 'Roboto',
+                      color: hexStringToColor('#FFFFFF'),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500))),
+        ),
+        Center(
+          child: Container(
+              padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
+              child: SelectableText(
+                "You have not filled certain parts. Please check again.",
+                style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w400,
+                      color: hexStringToColor('#A3A3A3'),
+                      fontSize: 14,
+                    ),
+                textAlign: TextAlign.center,
+              )),
+        ),
+        Padding(
+          padding: const EdgeInsetsDirectional.only(top: 30),
+          child: Center(
+              child: SizedBox(
+            width: 170,
+            height: 50,
+            child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: rightButtonStyle(),
+                child: const Text("OK")),
+          )),
         ),
       ],
     ),

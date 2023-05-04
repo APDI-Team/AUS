@@ -491,8 +491,11 @@ class EventWritePageState extends State<EventWritePage> {
                           if (twoTagsAllowed.length >= 3) {
                             textChecker['Tags'] = false;
                             textChecking();
-                            popUpDialog(context,
-                                "Maximum of two tags is allowed", 'try again');
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return maxTagWarningPopup(context);
+                                });
                           }
                           ;
                         },
@@ -822,57 +825,17 @@ class EventWritePageState extends State<EventWritePage> {
                                               "Are you sure you want to create this event?",
                                               createEvent);
                                         });
-                                  } else {
-                                    showDialog<void>(
+                                  } else if (!isButtonEnabled) {
+                                    showModalBottomSheet(
                                         context: context,
                                         builder: (BuildContext context) {
-                                          if (urlValidity == false) {
-                                            return AlertDialog(
-                                              title: const Text(
-                                                'Warning',
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                              content: const Text(
-                                                "The registration URL you have filled in is invalid. Please check again.",
-                                                style: TextStyle(fontSize: 12),
-                                              ),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                  child: Text(
-                                                    "OK",
-                                                    style: TextStyle(
-                                                        color: ApdiColors
-                                                            .themeGreen),
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          } else {
-                                            return AlertDialog(
-                                              title: const Text(
-                                                'Warning',
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                              content: const Text(
-                                                "You have not filled certain parts. Please check again.",
-                                                style: TextStyle(fontSize: 12),
-                                              ),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                  child: Text(
-                                                    "OK",
-                                                    style: TextStyle(
-                                                        color: ApdiColors
-                                                            .themeGreen),
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          }
+                                          return incompleteEventPopup(context);
+                                        });
+                                  } else {
+                                    showModalBottomSheet(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return urlInvalidPopup(context);
                                         });
                                   }
                                 },
