@@ -25,9 +25,11 @@ void reportEvent(BuildContext context, EventController controller) {
       arguments: {'event': controller.event});
 }
 
-//determine image of category button, default is seminar
+//determine image of category button, default is others
 String categoryButtonImage(String eventCategory) {
-  if (eventCategory == "Webinar") {
+  if (eventCategory == "Seminar") {
+    return 'assets/imgs/button-seminar.svg';
+  } else if (eventCategory == "Webinar") {
     return 'assets/imgs/button-webinar.svg';
   } else if (eventCategory == "Workshop") {
     return 'assets/imgs/button-workshop.svg';
@@ -35,27 +37,39 @@ String categoryButtonImage(String eventCategory) {
     return 'assets/imgs/button-party.svg';
   } else if (eventCategory == "Competition") {
     return 'assets/imgs/button-competition.svg';
+  } else if (eventCategory == "Internship") {
+    return 'assets/imgs/button-internship.svg';
+  } else if (eventCategory == "Sports") {
+    return 'assets/imgs/button-sports.svg';
   }
-  return 'assets/imgs/button-seminar.svg';
+  return 'assets/imgs/button-others.svg';
 }
 
-//default color is blue
+// default color is blue
 String buttonColor(String eventCategory) {
-  if (eventCategory == "Webinar") {
+  if (eventCategory == "Seminar") {
+    return "#b05033"; //orange
+  } else if (eventCategory == "Webinar") {
     return "#578a5a"; //green
   } else if (eventCategory == "Competition") {
     return "#864ac0"; //purple
   } else if (eventCategory == "Workshop") {
     return "#dfb064"; //yellow
   } else if (eventCategory == "Party") {
-    return "#249998"; //blue
+    return "#249998"; //mint
+  } else if (eventCategory == "Internship") {
+    return "#1e769b"; //skyblue
+  } else if (eventCategory == "Sports") {
+    return "#354294"; //blue
   }
-  return "b05033"; //orange
+  return "#ffffff"; //white
 }
 
-//determine thumbnail image of events, default image is seminar
+//determine thumbnail image of events, default image is others
 String eventImage(String eventCategory) {
-  if (eventCategory == "Webinar") {
+  if (eventCategory == "Seminar") {
+    return 'assets/imgs/thumbnail-seminar.png';
+  } else if (eventCategory == "Webinar") {
     return 'assets/imgs/thumbnail-webinar.png';
   } else if (eventCategory == "Workshop") {
     return 'assets/imgs/thumbnail-workshop.png';
@@ -63,8 +77,12 @@ String eventImage(String eventCategory) {
     return 'assets/imgs/thumbnail-party.png';
   } else if (eventCategory == "Competition") {
     return 'assets/imgs/thumbnail-competition.png';
+  } else if (eventCategory == "Sports") {
+    return 'assets/imgs/thumbnail-sports.png';
+  } else if (eventCategory == "Internship") {
+    return 'assets/imgs/thumbnail-internship.png';
   }
-  return 'assets/imgs/thumbnail-seminar.png';
+  return 'assets/imgs/thumbnail-others.png';
 }
 
 String capitalize(String value) {

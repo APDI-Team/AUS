@@ -134,24 +134,39 @@ class EventDetailPageState extends State<EventDetailPage> {
                                           "The register url ${controller.event.registerLink} is not a valid web url.")
                                     });
                           },
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
+                          style: ElevatedButton.styleFrom(
+                              foregroundColor:
+                                  (controller.event.category == "Others")
+                                      ? Colors.black
+                                      : Colors.white,
+                              backgroundColor: hexStringToColor(
+                                  buttonColor(controller.event.category)),
+                              shape: (RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               )),
-                              backgroundColor: MaterialStateProperty.all(
-                                  hexStringToColor(
-                                      buttonColor(controller.event.category))),
-                              textStyle:
-                                  MaterialStateProperty.all(const TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Outfit',
-                                fontWeight: FontWeight.w500,
-                              ))),
+                              textStyle: const TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'Outfit',
+                                  fontWeight: FontWeight.w500)),
                           child: const Text('Register'),
+
+                          // shape: MaterialStateProperty.all<
+                          //     RoundedRectangleBorder>(RoundedRectangleBorder(
+                          //   borderRadius: BorderRadius.circular(10),
+                          // )),
+                          // backgroundColor: MaterialStateProperty.all(
+                          //     hexStringToColor(
+                          //         buttonColor(controller.event.category))),
+                          // textStyle:
+                          //     MaterialStateProperty.all(const TextStyle(
+                          //   fontSize: 16,
+                          //   fontFamily: 'Outfit',
+                          //   fontWeight: FontWeight.w500,
+                          //   color: Color.fromARGB(255, 0, 0, 0),
+                          // )),
                         ),
                       ),
+
                       // const Spacer(),
                       Padding(
                         padding: const EdgeInsetsDirectional.only(start: 18),
