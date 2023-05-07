@@ -1,3 +1,4 @@
+import 'package:aus/controllers/notification_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fbauth;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'terms_and_conditions.dart';
 import 'components/custom_popup.dart';
 import '../utils/color_utils.dart';
+import 'notification_setting_page.dart';
 
 void userSignOut(BuildContext context) {
   fbauth.FirebaseAuth.instance.signOut();
@@ -113,7 +115,18 @@ class MorePage extends StatelessWidget {
             },
             title: const Text("Delete Your Account"),
             trailing: SvgPicture.asset('assets/icons/chevron-right.svg'),
-          )
+          ),
+          // ListTile(
+          //   onTap: () {
+          //     Navigator.of(context).push(
+          //       MaterialPageRoute<void>(
+          //         builder: (BuildContext context) => NotificationSettingPage(),
+          //       ),
+          //     );
+          //   },
+          //   title: const Text("Notification"),
+          //   trailing: SvgPicture.asset('assets/icons/chevron-right.svg'),
+          // ),
         ],
       ),
     );
